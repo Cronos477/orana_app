@@ -27,9 +27,8 @@ Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients
     num measureValue = int.parse(ingredient!['value'].toString());
     measureValue /= 100;
 
-    (measureValue, initialMeasureUnit) = parseMeasurementReceive(measureValue.round(), ingredient['measurement_unit']);
-
     measureText = formatter.format(measureValue).trim();
+    initialMeasureUnit = ingredient['measurement_unit'];
   } else {
     final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
     priceText = formatter.format(0.00).trim();
@@ -66,9 +65,6 @@ Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients
             bool success;
             Map responseBody;
 
-            final String finalUnit;
-            final int finalMeasurement;
-
             final int price = int.parse(priceTextEditingController.text
                 .replaceAll('.', '')
                 .replaceAll(',', ''));
@@ -77,14 +73,12 @@ Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients
                 .replaceAll('.', '')
                 .replaceAll(',', ''));
 
-            (finalMeasurement, finalUnit) = parseMeasurementSent(value, measurementUnit);
-
             final Map<String, dynamic> body = {
               'name': nameTextEditingController.text,
               'description': descriptionTextEditingController.text,
               'price': price,
-              'value': finalMeasurement,
-              'measurement_unit': finalUnit
+              'value': value,
+              'measurement_unit': measurementUnit
             };
 
             if (editing) {

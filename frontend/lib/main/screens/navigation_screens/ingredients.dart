@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:orana/main/screens/dialog_screens/ingredients/ingredients_dialog.dart';
 import 'package:orana/main/services/get_data.dart';
 import 'package:orana/main/widgets/custom_card.dart';
@@ -35,7 +35,6 @@ class _IngredientsState extends State<Ingredients> {
             );
           } else if (snapshot.hasData) {
             List ingredients = snapshot.data;
-
             return Scaffold(
               backgroundColor: AppColors.background,
               floatingActionButton: FloatingActionButton(
@@ -64,6 +63,10 @@ class _IngredientsState extends State<Ingredients> {
                   final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
                   final String priceText = formatter.format(price);
 
+                  num measureValue = int.parse(ingredients[index]['value'].toString());
+                  measureValue /= 100;
+                  final String measureText = formatter.format(measureValue).trim();
+
                   Future<void> onTapHandler() async {
                     final bool? success = await showIngredientsDialog(
                         context,
@@ -77,10 +80,17 @@ class _IngredientsState extends State<Ingredients> {
                   }
 
                   return CustomCard(
+                    title: "${ingredients[index]['name']} - $measureText${ingredients[index]['measurement_unit']}",
                     onTapHandler: onTapHandler,
                     valueText: priceText,
                     index: index,
                     items: ingredients,
+                    customExpansion: Text(
+                      ingredients[index]['description'],
+                      style: TextStyle(
+                        color: AppColors.secondary,
+                      ),
+                    ),
                   );
                 },
               ),

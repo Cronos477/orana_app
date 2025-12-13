@@ -51,23 +51,3 @@ Future<bool> deleteIngredient(Map<String, dynamic> ingredient) async{
 
   return response.statusCode == 204;
 }
-
-(int, String) parseMeasurementSent(int measurement, String measurementUnit) {
-  if (measurementUnit == 'Kg') {
-    return (measurement*1000, 'g');
-  } else if (measurementUnit == 'L') {
-    return (measurement*1000, 'mL');
-  }
-
-  return (measurement, measurementUnit);
-}
-
-(int, String) parseMeasurementReceive(int measurement, String measurementUnit) {
-  if (measurement >= 1000) {
-    if (measurementUnit == 'mL') {
-      return ((measurement/1000).round(), 'L');
-    }
-    return ((measurement/1000).round(), 'Kg');
-  }
-  return (measurement, measurementUnit);
-}

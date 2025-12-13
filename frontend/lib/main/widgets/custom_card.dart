@@ -4,6 +4,7 @@ import 'package:orana/utils/app_colors.dart';
 class CustomCard extends StatelessWidget {
   const CustomCard({
     super.key,
+    this.title,
     required this.onTapHandler,
     required this.valueText,
     required this.index,
@@ -11,6 +12,7 @@ class CustomCard extends StatelessWidget {
     this.customExpansion
   });
 
+  final String? title;
   final int index;
   final List items;
   final String valueText;
@@ -28,7 +30,7 @@ class CustomCard extends StatelessWidget {
           color: AppColors.primary,
         ),
         title: Text(
-          items[index]['name'],
+          title ?? items[index]['name'],
           style: TextStyle(
             color: AppColors.primary,
           ),
@@ -36,13 +38,10 @@ class CustomCard extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: customExpansion == null ? 0 : 8),
-              child: Text(
-                'R\$ $valueText',
-                style: TextStyle(
-                    color: AppColors.secondary
-                ),
+            Text(
+              'R\$ $valueText',
+              style: TextStyle(
+                  color: AppColors.secondary
               ),
             ),
             if (customExpansion != null) ...[
