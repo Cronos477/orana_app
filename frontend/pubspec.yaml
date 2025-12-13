@@ -1,0 +1,46 @@
+name: orana
+description: "The application for managing ingredients and prices."
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_native_splash: ^2.4.6
+  flutter_launcher_icons: ^0.13.1
+  http: ^1.5.0
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/orana_icon.jpg"
+  min_sdk_android: 21
+
+flutter_native_splash:
+  color: "#203D0E"
+  image: "assets/orana.jpg"
+  android: true
+  ios: true
+  web: false
+
+  android_12:
+    image: "assets/orana.jpg"
+    color: "#203D0E"
