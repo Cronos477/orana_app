@@ -88,6 +88,7 @@ Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients
             };
 
             if (editing) {
+              body['id'] = ingredient!['id'];
               success = await updateIngredient(body);
             } else {
               (success, responseBody) = await createIngredient(body);

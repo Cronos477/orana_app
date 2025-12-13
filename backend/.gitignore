@@ -1,4 +1,6 @@
 .venv
+venv
 .env
 templates
 .idea
+__pycache__

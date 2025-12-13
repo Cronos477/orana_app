@@ -18,6 +18,7 @@ Future<bool> updateIngredient(Map<String, dynamic> ingredient) async{
 
   return response.statusCode == 201 || response.statusCode == 200;
 }
+
 Future<dynamic> createIngredient(Map<String, dynamic> ingredient) async{
   final String body = jsonEncode(ingredient);
 
@@ -36,6 +37,7 @@ Future<dynamic> createIngredient(Map<String, dynamic> ingredient) async{
 
   return (false, null);
 }
+
 Future<bool> deleteIngredient(Map<String, dynamic> ingredient) async{
   final ingredientId = ingredient['id'];
 
@@ -59,6 +61,7 @@ Future<bool> deleteIngredient(Map<String, dynamic> ingredient) async{
 
   return (measurement, measurementUnit);
 }
+
 (int, String) parseMeasurementReceive(int measurement, String measurementUnit) {
   if (measurement >= 1000) {
     if (measurementUnit == 'mL') {

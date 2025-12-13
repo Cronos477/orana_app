@@ -26,7 +26,9 @@ class FixedCosts(models.Model):
 class Ingredients(models.Model):
     MEASUREMENT_UNITS = (
         ("g", "g"),
+        ("Kg", "Kg"),
         ("ml", "ml"),
+        ("L", "L")
     )
     id = models.UUIDField(
         primary_key=True,
