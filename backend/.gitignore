@@ -4,3 +4,4 @@ venv
 templates
 .idea
 __pycache__
+.vscode
