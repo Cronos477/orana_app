@@ -204,12 +204,25 @@ Future<bool?> showMenuDialog(BuildContext parentContext, List menuItems, int? in
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Container(
+                      color: Colors.transparent,
+                      child: ListView.builder(
+                        itemCount: ingredients.length,
+                        padding: const EdgeInsetsGeometry.symmetric(vertical: 8),
+                        itemBuilder: (BuildContext ingredientsContext, int index) {
+                          return Placeholder();
+                        }
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: CustomTextField(
                       textEditingController: descriptionTextEditingController,
                       labelText: "Descrição",
                     ),
                   ),
-                  //TODO: Adicionar tela para adicionar/remover ingredientes, aqui aparece como: x ingredientes adicionados.
+                  //TODO: Adicionar tela para adicionar/remover ingredientes, será uma tela completa com duas abas, uma aba geral e uma para adicionar ingredientes, um campo de preço calculado, inalteravel, e outro para preço final, que pode ser alterado.
                 ],
               ),
             ),
