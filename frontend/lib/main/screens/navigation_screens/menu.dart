@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orana/main/screens/menu_editing_screens/menu_editing_screen.dart';
 import 'package:orana/main/services/get_data.dart';
 import 'package:orana/utils/app_colors.dart';
 
@@ -37,7 +38,13 @@ class _MenuScreenState extends State<MenuScreen> {
               floatingActionButton: FloatingActionButton(
                 backgroundColor: AppColors.primary,
                 onPressed: () async {
-                  
+                  final bool success = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext newContext) => MenuEditingScreen(menuItems: menuItems)
+                    )
+                  );
+                  print(success);
                 },
                 child: Icon(
                   Icons.add,

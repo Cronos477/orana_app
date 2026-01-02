@@ -10,7 +10,8 @@ class CustomTextField extends StatelessWidget {
     this.textInputType,
     this.inputFormatters,
     this.prefix,
-    this.suffix
+    this.suffix,
+    this.readOnly = false
   });
 
   final TextEditingController textEditingController;
@@ -19,15 +20,19 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Widget? prefix;
   final Widget? suffix;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       style: TextStyle(color: AppColors.primary),
+      readOnly: readOnly,
       controller: textEditingController,
       cursorColor: AppColors.secondary,
       keyboardType: textInputType,
       inputFormatters: inputFormatters,
+      maxLines: 4,
+      minLines: 1,
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(color: AppColors.primary),
