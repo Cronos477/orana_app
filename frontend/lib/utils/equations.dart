@@ -1,6 +1,8 @@
 import 'package:orana/main/services/get_data.dart';
 
 Future<num> priceCalculation(List ingredients) async {
+  // Calcula o preço ideal de um item, baseado nas constantes, custos fixos quantidade dos ingredientes
+  
   final List constants = await getConstants();
   final List costs = await getFixedCosts();
 

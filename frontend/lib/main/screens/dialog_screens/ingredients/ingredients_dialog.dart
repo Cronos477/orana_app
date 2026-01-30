@@ -1,57 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:orana/main/classes/currency_input_formatter.dart';
+import 'package:orana/main/classes/ingredient.dart';
 import 'package:orana/main/services/ingredients/ingredients_services.dart';
 import 'package:orana/main/widgets/custom_dropdown_list.dart';
 import 'package:orana/main/widgets/custom_text_field.dart';
 import 'package:orana/utils/app_colors.dart';
 
-Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients, int? index) async {
+Future<bool?> showIngredientsDialog(
+  BuildContext parentContext,
+  List<Ingredient> ingredients,
+  int? index,
+) async {
   final bool editing = index != null;
 
-  Map<String, dynamic>? ingredient = editing
-      ? ingredients[index]
-      : null;
+  Ingredient ingredient = editing ? ingredients[index] : Ingredient(name: "");
 
-  String? priceText;
-  String? measureText;
-  String? initialMeasureUnit;
+  String priceText = ingredient.parsePriceToString();
+  String measureText = ingredient.parseValueToString();
 
-  if (editing) {
-    num price = int.parse(ingredients[index]['price'].toString());
-    price /= 100;
-    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
-    priceText = formatter.format(price).trim();
-
-    num measureValue = int.parse(ingredient!['value'].toString());
-    measureValue /= 100;
-
-    measureText = formatter.format(measureValue).trim();
-    initialMeasureUnit = ingredient['measurement_unit'];
-  } else {
-    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
-    priceText = formatter.format(0.00).trim();
-    measureText = formatter.format(0.00).trim();
-  }
 
   TextEditingController nameTextEditingController = TextEditingController(
-      text: ingredient != null ?
-      ingredient['name'] :
-      null
+    text: ingredient.name,
   );
   TextEditingController descriptionTextEditingController = TextEditingController(
-      text: ingredient != null ?
-      ingredient['description'] :
-      null
+    text: ingredient.description
   );
   TextEditingController priceTextEditingController = TextEditingController(
-      text: priceText
+    text: priceText,
   );
   TextEditingController valueTextEditingController = TextEditingController(
-      text: measureText
+    text: measureText,
   );
-  String measurementUnit = editing ? initialMeasureUnit! : 'g';
+  String measurementUnit = ingredient.mesuarementUnit.name;
 
   bool saving = false;
 
@@ -63,62 +44,55 @@ Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients
         builder: (context, setState) {
           Future<void> handleSave() async {
             bool success;
-            Map responseBody;
+            Map<String, dynamic> responseBody;
 
-            final int price = int.parse(priceTextEditingController.text
-                .replaceAll('.', '')
-                .replaceAll(',', ''));
+            ingredient.name = nameTextEditingController.text;
+            ingredient.description = descriptionTextEditingController.text;
+            ingredient.price = ingredient.parseTextValueToInt(priceTextEditingController.text);
+            ingredient.value = ingredient.parseTextValueToInt(valueTextEditingController.text);
+            ingredient.mesuarementUnit = MesuarementUnit.values.byName(measurementUnit);
 
-            final int value = int.parse(valueTextEditingController.text
-                .replaceAll('.', '')
-                .replaceAll(',', ''));
-
-            final Map<String, dynamic> body = {
-              'name': nameTextEditingController.text,
-              'description': descriptionTextEditingController.text,
-              'price': price,
-              'value': value,
-              'measurement_unit': measurementUnit
-            };
+            final Map<String, dynamic> body = ingredient.toMap();
 
             if (editing) {
-              body['id'] = ingredient!['id'];
+              body['id'] = ingredient.id;
               success = await updateIngredient(body);
             } else {
               (success, responseBody) = await createIngredient(body);
 
               if (success) {
-                ingredients.add(responseBody);
+                ingredients.add(Ingredient.fromJson(responseBody));
               }
             }
 
             if (context.mounted) {
               ScaffoldMessenger.of(parentContext).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      success ?
-                      'Alterações salvas com sucesso!' :
-                      'Ocorreu um erro ao realizar as alterações!',
-                      style: TextStyle(color: AppColors.text),
-                    ),
-                    backgroundColor: success
-                        ? AppColors.secondary
-                        : AppColors.snackBarError,
-                  )
+                SnackBar(
+                  content: Text(
+                    success
+                        ? 'Alterações salvas com sucesso!'
+                        : 'Ocorreu um erro ao realizar as alterações!',
+                    style: TextStyle(color: AppColors.text),
+                  ),
+                  backgroundColor: success
+                      ? AppColors.secondary
+                      : AppColors.snackBarError,
+                ),
               );
               Navigator.of(context).pop(success);
             }
           }
+
           Future<void> handleDelete() async {
-            final success = await deleteIngredient(ingredient!);
+            final success = await deleteIngredient(ingredient);
 
             if (context.mounted) {
               ScaffoldMessenger.of(parentContext).showSnackBar(
                 SnackBar(
                   content: Text(
-                    success ?
-                    'Item removido com sucesso!' :
-                    'Ocorreu um erro ao realizar a exclusão!',
+                    success
+                        ? 'Item removido com sucesso!'
+                        : 'Ocorreu um erro ao realizar a exclusão!',
                     style: TextStyle(color: AppColors.text),
                   ),
                   backgroundColor: success
@@ -138,38 +112,29 @@ Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients
           }
 
           final cancelButton = TextButton(
-              child: Text(
-                "Cancelar",
-                style: TextStyle(color: AppColors.primary),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            );
+            child: Text("Cancelar", style: TextStyle(color: AppColors.primary)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          );
           final saveButton = TextButton(
-              child: Text(
-                "Salvar",
-                style: TextStyle(color: AppColors.primary),
-              ),
-              onPressed: () async {
-                setState(() {
-                  saving = true;
-                });
-                await handleSave();
-              },
-            );
+            child: Text("Salvar", style: TextStyle(color: AppColors.primary)),
+            onPressed: () async {
+              setState(() {
+                saving = true;
+              });
+              await handleSave();
+            },
+          );
           final deleteButton = IconButton(
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
-              ),
-              onPressed: () async {
-                setState(() {
-                  saving = true;
-                });
-                handleDelete();
-              },
-            );
+            icon: const Icon(Icons.delete, color: Colors.red),
+            onPressed: () async {
+              setState(() {
+                saving = true;
+              });
+              await handleDelete();
+            },
+          );
 
           return AlertDialog(
             title: Text('Ingredientes'),
@@ -195,12 +160,10 @@ Future<bool?> showIngredientsDialog(BuildContext parentContext, List ingredients
                       labelText: "Valor",
                       prefix: Text(
                         'R\$ ',
-                        style: TextStyle(
-                          color: AppColors.primary
-                        ),
+                        style: TextStyle(color: AppColors.primary),
                       ),
                       textInputType: TextInputType.numberWithOptions(
-                        decimal: true
+                        decimal: true,
                       ),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,

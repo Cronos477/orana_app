@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:orana/main/classes/ingredient.dart';
 import 'package:orana/utils/backend_info.dart';
 
 Future<List> getMenu() async {
@@ -25,6 +26,8 @@ Future<List> getMenu() async {
 }
 
 Future<List> getIngredients() async {
+  List<Ingredient> ingredients = [];
+
   try {
     final req = await http.get(
       Uri.parse("${BackendInfo.baseUrl}/ingredients"),
@@ -37,7 +40,20 @@ Future<List> getIngredients() async {
       throw Error();
     }
 
-    final List ingredients = jsonDecode(req.body);
+    final List response = jsonDecode(req.body);
+
+    for (Map ingredient in response) {
+      ingredients.add(
+        Ingredient(
+          id: ingredient["id"],
+          name: ingredient["name"],
+          description: ingredient["description"],
+          price: ingredient["price"],
+          value: ingredient["value"],
+          mesuarementUnit: MesuarementUnit.values.byName(ingredient['measurement_unit'])
+        )
+      );
+    }
 
     return ingredients;
 

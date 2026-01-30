@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:orana/main/classes/ingredient.dart';
 import 'package:orana/utils/backend_info.dart';
 
 Future<bool> updateIngredient(Map<String, dynamic> ingredient) async{
@@ -38,8 +39,8 @@ Future<dynamic> createIngredient(Map<String, dynamic> ingredient) async{
   return (false, null);
 }
 
-Future<bool> deleteIngredient(Map<String, dynamic> ingredient) async{
-  final ingredientId = ingredient['id'];
+Future<bool> deleteIngredient(Ingredient ingredient) async{
+  final String ingredientId = ingredient.id!;
 
   final Response response = await delete(
     Uri.parse('${BackendInfo.baseUrl}/ingredients/$ingredientId/'),

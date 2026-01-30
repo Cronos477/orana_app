@@ -41,7 +41,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   final bool success = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext newContext) => MenuEditingScreen(menuItems: menuItems)
+                      builder: (BuildContext newContext) => MenuEditingScreen(menuItems: menuItems, ingredients: [],)
                     )
                   );
                   print(success);
