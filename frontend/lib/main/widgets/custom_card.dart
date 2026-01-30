@@ -9,7 +9,9 @@ class CustomCard extends StatelessWidget {
     required this.valueText,
     required this.index,
     required this.items,
-    this.customExpansion
+    this.customExpansion,
+    this.trailing,
+    this.trailingColor
   });
 
   final String? title;
@@ -18,6 +20,8 @@ class CustomCard extends StatelessWidget {
   final String valueText;
   final Function() onTapHandler;
   final Widget? customExpansion;
+  final IconData? trailing;
+  final Color? trailingColor;
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +54,8 @@ class CustomCard extends StatelessWidget {
           ],
         ),
         trailing: Icon(
-          Icons.edit,
-          color: AppColors.primary,
+          trailing ?? Icons.edit,
+          color: trailingColor ?? AppColors.primary,
         ),
         onTap: onTapHandler,
       ),

@@ -1,12 +1,14 @@
-import 'package:intl/intl.dart';
+import 'package:orana/main/screens/menu_editing_screens/navigation_screens/ingredients.dart';
 import 'package:orana/main/screens/menu_editing_screens/navigation_screens/attributes.dart';
 import 'package:orana/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MenuEditingScreen extends StatefulWidget {
-  const MenuEditingScreen({super.key, required this.menuItems, this.index});
+  const MenuEditingScreen({super.key, required this.menuItems, required this.ingredients, this.index});
   final int? index;
   final List menuItems;
+  final List ingredients;
 
   @override
   State<MenuEditingScreen> createState() => _MenuEditingScreenState();
@@ -70,7 +72,9 @@ class _MenuEditingScreenState extends State<MenuEditingScreen> {
         calculatePriceTextEditingController: calculatePriceTextEditingController,
         descriptionTextEditingController: descriptionTextEditingController,
       ),
-      Placeholder(),
+      Ingredients(
+        ingredients: widget.ingredients,
+      ),
     ];
 
     return Scaffold(

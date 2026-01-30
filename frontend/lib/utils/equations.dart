@@ -19,7 +19,5 @@ Future<num> priceCalculation(List ingredients) async {
 
   final num total = profit * (salary + ingredientsPrices + invisibleExpanses + fixedCost);
 
-
-
   return total;
 }
