@@ -34,7 +34,7 @@ class CustomCard extends StatelessWidget {
           color: AppColors.primary,
         ),
         title: Text(
-          title ?? items[index]['name'],
+          title ?? items[index].name,
           style: TextStyle(
             color: AppColors.primary,
           ),

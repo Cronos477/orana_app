@@ -1,113 +1,82 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:orana/main/classes/fixed_costs.dart';
 import 'package:orana/main/classes/ingredient.dart';
 import 'package:orana/utils/backend_info.dart';
 
 Future<List> getMenu() async {
-  try {
-    final req = await http.get(
-      Uri.parse("${BackendInfo.baseUrl}/menu"),
-      headers: {
-        "Authorization": "Token ${BackendInfo.appToken}"
-      },
-    );
+  final req = await http.get(
+    Uri.parse("${BackendInfo.baseUrl}/menu"),
+    headers: {"Authorization": "Token ${BackendInfo.appToken}"},
+  );
 
-    if (req.statusCode != 200) {
-      throw Error();
-    }
-
-    final ingredients = jsonDecode(req.body);
-
-    return ingredients;
-
-  } catch (e) {
-    return ['Error', e];
+  if (req.statusCode != 200) {
+    throw FormatException("HTTP_ERROR: ${req.statusCode}");
   }
+
+  final ingredients = jsonDecode(req.body);
+
+  return ingredients;
 }
 
-Future<List> getIngredients() async {
+Future<List<Ingredient>> getIngredients() async {
   List<Ingredient> ingredients = [];
+  final req = await http.get(
+    Uri.parse("${BackendInfo.baseUrl}/ingredients"),
+    headers: {"Authorization": "Token ${BackendInfo.appToken}"},
+  );
 
-  try {
-    final req = await http.get(
-      Uri.parse("${BackendInfo.baseUrl}/ingredients"),
-      headers: {
-        "Authorization": "Token ${BackendInfo.appToken}"
-      },
-    );
-
-    if (req.statusCode != 200) {
-      throw Error();
-    }
-
-    final List response = jsonDecode(req.body);
-
-    for (Map ingredient in response) {
-      ingredients.add(
-        Ingredient(
-          id: ingredient["id"],
-          name: ingredient["name"],
-          description: ingredient["description"],
-          price: ingredient["price"],
-          value: ingredient["value"],
-          mesuarementUnit: MesuarementUnit.values.byName(ingredient['measurement_unit'])
-        )
-      );
-    }
-
-    return ingredients;
-
-  } catch (e) {
-    return ['Error', e];
+  if (req.statusCode != 200) {
+    throw FormatException("HTTP_ERROR: ${req.statusCode}");
   }
+
+  final List response = jsonDecode(req.body);
+
+  for (Map<String, dynamic> ingredient in response) {
+    ingredients.add(Ingredient.fromJson(ingredient));
+  }
+
+  return ingredients;
 }
 
-Future<dynamic> getCostsScreen() async {
-    final constants = await getConstants();
-    final fixedCosts = await getFixedCosts();
-    return (constants, fixedCosts);
+Future<(List, List<FixedCost>)> getCostsScreen() async {
+  final constants = await getConstants();
+  final fixedCosts = await getFixedCosts();
+  return (constants, fixedCosts);
 }
 
 Future<List> getConstants() async {
-  try {
-    final req = await http.get(
-      Uri.parse("${BackendInfo.baseUrl}/constants"),
-      headers: {
-        "Authorization": "Token ${BackendInfo.appToken}"
-      },
-    );
+  final req = await http.get(
+    Uri.parse("${BackendInfo.baseUrl}/constants"),
+    headers: {"Authorization": "Token ${BackendInfo.appToken}"},
+  );
 
-    if (req.statusCode != 200) {
-      throw Error();
-    }
-
-    final constants = jsonDecode(req.body);
-
-    return constants;
-
-  } catch (e) {
-    return ['Error', e];
+  if (req.statusCode != 200) {
+    throw FormatException("HTTP_ERROR: ${req.statusCode}");
   }
+
+  final constants = jsonDecode(req.body);
+
+  return constants;
 }
 
-Future<List> getFixedCosts() async {
-  try {
-    final req = await http.get(
-      Uri.parse("${BackendInfo.baseUrl}/fixed_costs"),
-      headers: {
-        "Authorization": "Token ${BackendInfo.appToken}"
-      },
-    );
+Future<List<FixedCost>> getFixedCosts() async {
+  List<FixedCost> fixedCosts = [];
 
-    if (req.statusCode != 200) {
-      throw Error();
-    }
+  final req = await http.get(
+    Uri.parse("${BackendInfo.baseUrl}/fixed_costs"),
+    headers: {"Authorization": "Token ${BackendInfo.appToken}"},
+  );
 
-    final constants = jsonDecode(req.body);
-
-    return constants;
-
-  } catch (e) {
-    return ['Error', e];
+  if (req.statusCode != 200) {
+    throw FormatException("HTTP_ERROR: ${req.statusCode}");
   }
+
+  final List response = jsonDecode(req.body);
+
+  for (Map<String, dynamic> fixedCost in response) {
+    fixedCosts.add(FixedCost.fromJson(fixedCost));
+  }
+
+  return fixedCosts;
 }

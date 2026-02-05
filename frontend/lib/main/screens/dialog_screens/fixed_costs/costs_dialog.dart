@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:orana/main/classes/currency_input_formatter.dart';
+import 'package:orana/main/classes/fixed_costs.dart';
 import 'package:orana/main/services/fixed_costs/costs_services_data.dart';
 import 'package:orana/main/widgets/custom_text_field.dart';
 import 'package:orana/utils/app_colors.dart';
@@ -9,31 +9,17 @@ import 'package:orana/utils/app_colors.dart';
 Future<bool?> showCostsDialog(BuildContext parentContext, List costs, int? index) async {
   final bool editing = index != null;
 
-  Map<String, dynamic>? cost = editing
+  FixedCost cost = editing
       ? costs[index]
-      : null;
+      : FixedCost(name: "");
 
-  String? valueText;
-
-  if (editing) {
-    num value = int.parse(costs[index]['value'].toString());
-    value /= 100;
-    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
-    valueText = formatter.format(value).trim();
-  } else {
-    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
-    valueText = formatter.format(0.00).trim();
-  }
+  String valueText = cost.parseValueToString();
 
   TextEditingController nameTextEditingController = TextEditingController(
-    text: cost != null ?
-    cost['name'] :
-    null
+    text: cost.name
   );
   TextEditingController descriptionTextEditingController = TextEditingController(
-      text: cost != null ?
-      cost['description'] :
-      null
+      text: cost.description
   );
   TextEditingController valueTextEditingController = TextEditingController(
       text: valueText
@@ -52,22 +38,14 @@ Future<bool?> showCostsDialog(BuildContext parentContext, List costs, int? index
             Map? costGen;
 
             if (editing) {
-              cost!['name'] = nameTextEditingController.text;
-              cost['description'] = descriptionTextEditingController.text;
-              cost['value'] = int.parse(valueTextEditingController.text.replaceAll('.', '').replaceAll(',', ''));
-              success = await updateCostsData(cost);
+              cost.name = nameTextEditingController.text;
+              cost.description = descriptionTextEditingController.text;
+              cost.value = cost.parseTextValueToInt(valueTextEditingController.text);
+              success = await updateCostsData(cost.toMap());
             } else {
-              final int value = int.parse(valueTextEditingController.text
-                  .replaceAll('.', '')
-                  .replaceAll(',', ''));
+              cost.value = cost.parseTextValueToInt(valueTextEditingController.text);
 
-              final Map<String, dynamic> reqCost = {
-                "name": nameTextEditingController.text,
-                "value": value,
-                "description": descriptionTextEditingController.text
-              };
-
-              (success, costGen) = await createCostsData(reqCost);
+              (success, costGen) = await createCostsData(cost.toMap());
 
               if (success) {
                 costs.add(costGen);
@@ -92,7 +70,7 @@ Future<bool?> showCostsDialog(BuildContext parentContext, List costs, int? index
             }
           }
           Future<void> handleDelete() async{
-            final bool success = await deleteCostsData(cost!);
+            final bool success = await deleteCostsData(cost.toMap());
 
             if (context.mounted) {
               ScaffoldMessenger.of(parentContext).showSnackBar(

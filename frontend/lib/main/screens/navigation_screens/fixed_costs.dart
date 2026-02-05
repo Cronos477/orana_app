@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:orana/main/classes/fixed_costs.dart';
 import 'package:orana/main/screens/dialog_screens/fixed_costs/constants_dialog.dart';
 import 'package:orana/main/screens/dialog_screens/fixed_costs/costs_dialog.dart';
 import 'package:orana/main/services/get_data.dart';
@@ -35,7 +35,7 @@ class _FixedCostsState extends State<FixedCosts> {
             ),
           );
         } else if (snapshot.hasData) {
-          List costs;
+          List<FixedCost> costs;
           List constants = [];
 
           (constants, costs) = snapshot.data;
@@ -83,9 +83,7 @@ class _FixedCostsState extends State<FixedCosts> {
               itemCount: costs.length,
               padding: const EdgeInsetsGeometry.symmetric(vertical: 8),
               itemBuilder: (BuildContext context, int index) {
-                final double value = costs[index]['value']/100;
-                final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
-                final String valueText = formatter.format(value);
+                final String valueText = costs[index].parseValueToString();
 
                 Future<void> onTapHandler() async {
                   final bool? success = await showCostsDialog(

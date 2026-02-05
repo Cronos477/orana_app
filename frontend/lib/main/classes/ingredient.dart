@@ -27,7 +27,7 @@ class Ingredient {
       description: json["description"],
       price: json["price"],
       value: json["value"],
-      mesuarementUnit: json["measurement_unit"]
+      mesuarementUnit: MesuarementUnit.values.byName(json["measurement_unit"])
     );
   }
 
