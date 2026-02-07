@@ -1,9 +1,19 @@
 import 'package:intl/intl.dart';
 
 enum ConstantType {
-  currency,
-  integer,
-  percentage
+  currency('c'),
+  integer('i'),
+  percentage('p');
+
+  final String value;
+  const ConstantType(this.value);
+
+  static ConstantType fromString(String value) {
+    return ConstantType.values.firstWhere(
+      (type) => type.value == value,
+      orElse: () => ConstantType.currency,
+    );
+  }
 }
 
 class Constant {
@@ -33,7 +43,12 @@ class Constant {
   }
 
   Map<String, dynamic> toMap() {
-    return {"id": id, "name": name, "description": description, "value": value};
+    return {
+      "id": id,
+      "name": name,
+      "description": description,
+      "value": value
+    };
   }
 
   String parseValueToString() {

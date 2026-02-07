@@ -1,12 +1,10 @@
 from rest_framework import serializers
 from orana.models import *
 
-class ConstantsSerializer(serializers.ModelSerializer):
-    const_type_display = serializers.CharField(source="get_const_type_display", read_only=True)
-    
+class ConstantsSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Constants
-        fields = ['id', 'name', 'description', 'value', 'const_type', 'const_type_display']
+        fields = '__all__'
 
 class FixedCostsSerializer(serializers.ModelSerializer):
     class Meta:
