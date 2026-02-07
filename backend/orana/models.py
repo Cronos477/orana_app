@@ -2,6 +2,12 @@ from django.db import models
 from uuid_extensions import uuid7
 
 class Constants(models.Model):
+    CONSTANT_TYPES = (
+        ("c", "currency"),
+        ("i", "integer"),
+        ("p", "percentage")
+    )
+    
     id = models.UUIDField(
         primary_key=True,
         default=uuid7,
@@ -11,6 +17,7 @@ class Constants(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     value = models.IntegerField(null=False, blank=False)
+    const_type = models.CharField(max_length=1, choices=CONSTANT_TYPES, null=False, blank=False, default="c")
 
 class FixedCosts(models.Model):
     id = models.UUIDField(

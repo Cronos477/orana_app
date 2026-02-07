@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:orana/main/classes/fixed_costs.dart';
-import 'package:orana/main/classes/ingredient.dart';
 import 'package:orana/utils/backend_info.dart';
+import 'package:orana/main/classes/fixed_costs/constant.dart';
+import 'package:orana/main/classes/fixed_costs/fixed_costs.dart';
+import 'package:orana/main/classes/ingredient/ingredient.dart';
 
 Future<List> getMenu() async {
   final req = await http.get(
@@ -39,13 +40,15 @@ Future<List<Ingredient>> getIngredients() async {
   return ingredients;
 }
 
-Future<(List, List<FixedCost>)> getCostsScreen() async {
-  final constants = await getConstants();
-  final fixedCosts = await getFixedCosts();
+Future<(List<Constant>, List<FixedCost>)> getCostsScreen() async {
+  final List<Constant> constants = await getConstants();
+  final List<FixedCost> fixedCosts = await getFixedCosts();
   return (constants, fixedCosts);
 }
 
-Future<List> getConstants() async {
+Future<List<Constant>> getConstants() async {
+  final List<Constant> constants = [];
+
   final req = await http.get(
     Uri.parse("${BackendInfo.baseUrl}/constants"),
     headers: {"Authorization": "Token ${BackendInfo.appToken}"},
@@ -55,7 +58,11 @@ Future<List> getConstants() async {
     throw FormatException("HTTP_ERROR: ${req.statusCode}");
   }
 
-  final constants = jsonDecode(req.body);
+  final response = jsonDecode(req.body);
+
+  for (Map<String, dynamic> constant in response) {
+    constants.add(Constant.fromJson(constant));
+  }
 
   return constants;
 }

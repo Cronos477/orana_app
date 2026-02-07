@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:orana/main/classes/miscellaneous/custom_response.dart';
 import 'package:orana/utils/backend_info.dart';
 
-Future<bool> updateCostsData(Map<String, dynamic> cost) async {
+Future<CustomResponse> updateCostsData(Map<String, dynamic> cost) async {
   final String body = jsonEncode(cost);
   final costId = cost['id'];
 
@@ -15,10 +16,16 @@ Future<bool> updateCostsData(Map<String, dynamic> cost) async {
       }
   );
 
-  return response.statusCode == 201 || response.statusCode == 200;
+  final bool success = response.statusCode == 201 || response.statusCode == 200;
+
+  if (success) {
+    return ReqSuccess(success, response.statusCode, null);
+  }
+
+  return ReqError(success, response.statusCode);
 }
 
-Future<dynamic> createCostsData(Map<String, dynamic> cost) async {
+Future<CustomResponse> createCostsData(Map<String, dynamic> cost) async {
   final String body = jsonEncode(cost);
 
   final Response response = await post(
@@ -30,14 +37,16 @@ Future<dynamic> createCostsData(Map<String, dynamic> cost) async {
       }
   );
 
-  if (response.statusCode == 201 || response.statusCode == 200) {
-    return (true, jsonDecode(response.body));
+  final bool success = response.statusCode == 201 || response.statusCode == 200;
+
+  if (success) {
+    return ReqSuccess(success, response.statusCode, jsonDecode(response.body));
   }
 
-  return (false, null);
+  return ReqError(success, response.statusCode);
 }
 
-Future<bool> deleteCostsData(Map<String, dynamic> cost) async {
+Future<CustomResponse> deleteCostsData(Map<String, dynamic> cost) async {
   final costId = cost['id'];
 
   final Response response = await delete(
@@ -48,5 +57,11 @@ Future<bool> deleteCostsData(Map<String, dynamic> cost) async {
       },
   );
 
-  return response.statusCode == 204;
+  final bool success = response.statusCode == 204;
+
+  if (success) {
+    return ReqSuccess(success, response.statusCode, null);
+  }
+
+  return ReqError(success, response.statusCode);
 }

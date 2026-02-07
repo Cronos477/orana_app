@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orana/main/classes/ingredient.dart';
+import 'package:orana/main/classes/ingredient/ingredient.dart';
 import 'package:orana/main/screens/dialog_screens/ingredients/ingredients_dialog.dart';
 import 'package:orana/main/services/get_data.dart';
 import 'package:orana/main/widgets/custom_card.dart';

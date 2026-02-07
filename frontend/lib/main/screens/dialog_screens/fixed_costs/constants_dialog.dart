@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:orana/main/classes/currency_input_formatter.dart';
+import 'package:orana/main/classes/fixed_costs/constant.dart';
+import 'package:orana/main/classes/miscellaneous/currency_input_formatter.dart';
 import 'package:orana/main/services/fixed_costs/update_constants_data.dart';
 import 'package:orana/utils/app_colors.dart';
 
-Future<void> showConstantsDialog(BuildContext parentContext, List constants) async {
+Future<void> showConstantsDialog(BuildContext parentContext, List<Constant> constants) async {
   final List<TextEditingController> controllers = [];
   for (var constant in constants) {
-    constant['edited'] = false;
-
-    String text;
-    if (constant['name'] == 'Salário') {
-      num value = int.parse(constant['value'].toString());
-      value /= 100;
-      final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
-      text = formatter.format(value).trim();
+    String textValue;
+    if (constant.name == 'Salário') {
+      textValue = constant.parseValueToString();
     } else {
-      text = constant['value'].toString();
+      textValue = constant.value.toString();
     }
 
-    controllers.add(TextEditingController(text: text));
+    controllers.add(TextEditingController(text: textValue));
   }
 
   bool saving = false;
@@ -41,7 +36,7 @@ Future<void> showConstantsDialog(BuildContext parentContext, List constants) asy
                 shrinkWrap: true,
                 itemCount: constants.length,
                 itemBuilder: (BuildContext context, int index) {
-                  String key = constants[index]['name'];
+                  String key = constants[index].name;
                   TextEditingController controller = controllers[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -52,7 +47,7 @@ Future<void> showConstantsDialog(BuildContext parentContext, List constants) asy
                         decimal: true,
                       ),
                       cursorColor: AppColors.secondary,
-                      inputFormatters: constants[index]['name'] == 'Salário'
+                      inputFormatters: constants[index].name == 'Salário'
                           ? [
                               FilteringTextInputFormatter.digitsOnly,
                               CurrencyInputFormatter(),
@@ -69,7 +64,7 @@ Future<void> showConstantsDialog(BuildContext parentContext, List constants) asy
                           ),
                         ),
                         focusColor: AppColors.secondary,
-                        prefix: constants[index]['name'] == 'Salário'
+                        prefix: constants[index].name == 'Salário'
                             ? Text(
                                 'R\$ ',
                                 style: TextStyle(color: AppColors.primary),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:orana/main/classes/ingredient.dart';
+import 'package:orana/main/classes/ingredient/ingredient.dart';
 import 'package:orana/utils/backend_info.dart';
 
 Future<bool> updateIngredient(Map<String, dynamic> ingredient) async{

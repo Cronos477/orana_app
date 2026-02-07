@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:orana/main/classes/currency_input_formatter.dart';
-import 'package:orana/main/classes/ingredient.dart';
+import 'package:orana/main/classes/miscellaneous/currency_input_formatter.dart';
+import 'package:orana/main/classes/ingredient/ingredient.dart';
 import 'package:orana/main/services/ingredients/ingredients_services.dart';
 import 'package:orana/main/widgets/custom_dropdown_list.dart';
 import 'package:orana/main/widgets/custom_text_field.dart';

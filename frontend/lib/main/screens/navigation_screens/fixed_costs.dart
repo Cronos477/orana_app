@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:orana/main/classes/fixed_costs.dart';
+import 'package:orana/main/classes/fixed_costs/constant.dart';
+import 'package:orana/main/classes/fixed_costs/fixed_costs.dart';
 import 'package:orana/main/screens/dialog_screens/fixed_costs/constants_dialog.dart';
 import 'package:orana/main/screens/dialog_screens/fixed_costs/costs_dialog.dart';
 import 'package:orana/main/services/get_data.dart';
@@ -36,7 +37,7 @@ class _FixedCostsState extends State<FixedCosts> {
           );
         } else if (snapshot.hasData) {
           List<FixedCost> costs;
-          List constants = [];
+          List<Constant> constants = [];
 
           (constants, costs) = snapshot.data;
 

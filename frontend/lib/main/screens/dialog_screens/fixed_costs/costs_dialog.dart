@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:orana/main/classes/currency_input_formatter.dart';
-import 'package:orana/main/classes/fixed_costs.dart';
+import 'package:orana/main/classes/miscellaneous/currency_input_formatter.dart';
+import 'package:orana/main/classes/miscellaneous/custom_response.dart';
+import 'package:orana/main/classes/fixed_costs/fixed_costs.dart';
 import 'package:orana/main/services/fixed_costs/costs_services_data.dart';
 import 'package:orana/main/widgets/custom_text_field.dart';
 import 'package:orana/utils/app_colors.dart';
@@ -34,21 +35,20 @@ Future<bool?> showCostsDialog(BuildContext parentContext, List costs, int? index
       return StatefulBuilder(
         builder: (context, setState) {
           Future<void> handleSave() async{
-            bool success;
-            Map? costGen;
+            final CustomResponse response;
+
+            cost.name = nameTextEditingController.text;
+            cost.description = descriptionTextEditingController.text;
+            cost.value = cost.parseTextValueToInt(valueTextEditingController.text);
 
             if (editing) {
-              cost.name = nameTextEditingController.text;
-              cost.description = descriptionTextEditingController.text;
-              cost.value = cost.parseTextValueToInt(valueTextEditingController.text);
-              success = await updateCostsData(cost.toMap());
+              response = await updateCostsData(cost.toMap());
             } else {
-              cost.value = cost.parseTextValueToInt(valueTextEditingController.text);
+              response = await createCostsData(cost.toMap());
 
-              (success, costGen) = await createCostsData(cost.toMap());
-
-              if (success) {
-                costs.add(costGen);
+              if (response.success) {
+                response as ReqSuccess;
+                costs.add(response.data);
               }
             }
 
@@ -56,38 +56,38 @@ Future<bool?> showCostsDialog(BuildContext parentContext, List costs, int? index
               ScaffoldMessenger.of(parentContext).showSnackBar(
                   SnackBar(
                     content: Text(
-                      success ?
+                      response.success ?
                       'Alterações salvas com sucesso!' :
-                      'Ocorreu um erro ao realizar as alterações!',
+                      'Ocorreu um erro ao realizar as alterações! ERROR: ${response.statusCode}',
                       style: TextStyle(color: AppColors.text),
                     ),
-                    backgroundColor: success
+                    backgroundColor: response.success
                         ? AppColors.secondary
                         : AppColors.snackBarError,
                   )
               );
-              Navigator.of(context).pop(success);
+              Navigator.of(context).pop(response.success);
             }
           }
           Future<void> handleDelete() async{
-            final bool success = await deleteCostsData(cost.toMap());
+            final CustomResponse response = await deleteCostsData(cost.toMap());
 
             if (context.mounted) {
               ScaffoldMessenger.of(parentContext).showSnackBar(
                 SnackBar(
                   content: Text(
-                    success ?
+                    response.success ?
                     'Item removido com sucesso!' :
-                    'Ocorreu um erro ao realizar a exclusão!',
+                    'Ocorreu um erro ao realizar a exclusão! ERROR: ${response.statusCode}',
                     style: TextStyle(color: AppColors.text),
                   ),
-                  backgroundColor: success
+                  backgroundColor: response.success
                       ? AppColors.secondary
                       : AppColors.snackBarError,
                 ),
               );
 
-              Navigator.of(context).pop(success);
+              Navigator.of(context).pop(response.success);
             }
           }
 
