@@ -1,11 +1,12 @@
 import 'package:intl/intl.dart';
 
 class FixedCost {
-  String? id;
+  final String? id;
   String name;
   String description;
   int value;
 
+  //TODO: Adicionar controller dentro de todas as classes personalizadas como em Constant
   FixedCost({
     this.id,
     required this.name,

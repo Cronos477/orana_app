@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 enum ConstantType {
@@ -18,19 +19,19 @@ enum ConstantType {
 
 class Constant {
   final String? id;
-  final String name;
-  final String description;
-  final ConstantType constantType;
-  final int value;
-  final bool edited;
+  String name;
+  String description;
+  ConstantType constantType;
+  TextEditingController controller;
+  int value;
 
   Constant({
     this.id,
     required this.name,
     this.description = "",
     this.constantType = ConstantType.currency,
+    required this.controller,
     this.value = 0,
-    this.edited = false
   });
 
   factory Constant.fromJson(Map<String, dynamic> json) {
@@ -38,6 +39,8 @@ class Constant {
       id: json["id"],
       name: json["name"],
       description: json["description"],
+      constantType: ConstantType.fromString(json["constant_type"] ?? "c"),
+      controller: TextEditingController(),
       value: json["value"],
     );
   }
@@ -47,6 +50,7 @@ class Constant {
       "id": id,
       "name": name,
       "description": description,
+      "const_type": constantType.value,
       "value": value
     };
   }
@@ -59,7 +63,11 @@ class Constant {
     return measureText;
   }
 
-  int parseTextValueToInt(String textValue) {
-    return int.parse(textValue.replaceAll('.', '').replaceAll(',', ''));
+  int parseTextValueToInt() {
+    return int.parse(
+      controller.text
+      .replaceAll('.', '')
+      .replaceAll(',', '')
+    );
   }
 }
