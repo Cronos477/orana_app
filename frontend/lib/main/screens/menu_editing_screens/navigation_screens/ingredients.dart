@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:orana/main/screens/dialog_screens/delete_alert_dialog.dart';
 import 'package:orana/main/widgets/custom_card.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 
 class Ingredients extends StatefulWidget {
   const Ingredients({

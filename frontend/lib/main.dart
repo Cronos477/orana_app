@@ -1,7 +1,7 @@
 import 'package:orana/main/screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

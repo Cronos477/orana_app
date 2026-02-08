@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:orana/utils/backend_info.dart';
-import 'package:orana/main/classes/fixed_costs/constant.dart';
-import 'package:orana/main/classes/fixed_costs/fixed_costs.dart';
-import 'package:orana/main/classes/ingredient/ingredient.dart';
+import 'package:orana/utils/constants/backend_info.dart';
+import 'package:orana/data/models/constant.dart';
+import 'package:orana/data/models/fixed_costs.dart';
+import 'package:orana/data/models/ingredient.dart';
 
 Future<List> getMenu() async {
   final req = await http.get(

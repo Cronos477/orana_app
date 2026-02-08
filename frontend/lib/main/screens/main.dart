@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orana/main/screens/navigation_screens/fixed_costs.dart';
 import 'package:orana/main/screens/navigation_screens/ingredients.dart';
 import 'package:orana/main/screens/navigation_screens/menu.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class MainScreen extends StatefulWidget {

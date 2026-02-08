@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:orana/utils/backend_info.dart';
+import 'package:orana/utils/constants/backend_info.dart';
 
 Future<Map<String, dynamic>> updateConstants(List constants) async {
   Map<String, dynamic> responses = {

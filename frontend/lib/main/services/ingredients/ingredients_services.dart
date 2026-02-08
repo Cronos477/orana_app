@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:orana/main/classes/ingredient/ingredient.dart';
-import 'package:orana/utils/backend_info.dart';
+import 'package:orana/data/models/ingredient.dart';
+import 'package:orana/utils/constants/backend_info.dart';
 
 Future<bool> updateIngredient(Map<String, dynamic> ingredient) async{
   final ingredientId = ingredient['id'];

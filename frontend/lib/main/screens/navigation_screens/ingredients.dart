@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:orana/main/classes/ingredient/ingredient.dart';
+import 'package:orana/data/models/ingredient.dart';
 import 'package:orana/main/screens/dialog_screens/ingredients/ingredients_dialog.dart';
 import 'package:orana/main/services/get_data.dart';
 import 'package:orana/main/widgets/custom_card.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 
 class Ingredients extends StatefulWidget {
   const Ingredients({super.key});

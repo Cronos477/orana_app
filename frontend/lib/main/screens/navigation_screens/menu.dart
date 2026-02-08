@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orana/main/screens/menu_editing_screens/menu_editing_screen.dart';
 import 'package:orana/main/services/get_data.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});

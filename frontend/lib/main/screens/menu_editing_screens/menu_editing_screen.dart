@@ -1,6 +1,6 @@
 import 'package:orana/main/screens/menu_editing_screens/navigation_screens/ingredients.dart';
 import 'package:orana/main/screens/menu_editing_screens/navigation_screens/attributes.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

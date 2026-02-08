@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:orana/main/classes/fixed_costs/constant.dart';
-import 'package:orana/main/classes/fixed_costs/fixed_costs.dart';
+import 'package:orana/data/models/constant.dart';
+import 'package:orana/data/models/fixed_costs.dart';
 import 'package:orana/main/screens/dialog_screens/fixed_costs/constants_dialog.dart';
 import 'package:orana/main/screens/dialog_screens/fixed_costs/costs_dialog.dart';
 import 'package:orana/main/services/get_data.dart';
 import 'package:orana/main/widgets/custom_card.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 
 class FixedCosts extends StatefulWidget {
   const FixedCosts({super.key});

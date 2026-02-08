@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:orana/main/classes/miscellaneous/currency_input_formatter.dart';
-import 'package:orana/main/classes/ingredient/ingredient.dart';
+import 'package:orana/utils/formatters/currency_input_formatter.dart';
+import 'package:orana/data/models/ingredient.dart';
 import 'package:orana/main/services/ingredients/ingredients_services.dart';
 import 'package:orana/main/widgets/custom_dropdown_list.dart';
 import 'package:orana/main/widgets/custom_text_field.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 
 Future<bool?> showIngredientsDialog(
   BuildContext parentContext,

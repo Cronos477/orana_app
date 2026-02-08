@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:orana/utils/backend_info.dart';
+import 'package:orana/utils/constants/backend_info.dart';
 
 Future<bool> updateMenuItem(Map<String, dynamic> menuItem) async{
   final menuItemId = menuItem['id'];

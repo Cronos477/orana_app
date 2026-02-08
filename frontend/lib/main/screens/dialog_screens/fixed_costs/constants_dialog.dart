@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:orana/main/classes/fixed_costs/constant.dart';
-import 'package:orana/main/classes/miscellaneous/currency_input_formatter.dart';
+import 'package:orana/data/models/constant.dart';
+import 'package:orana/utils/formatters/currency_input_formatter.dart';
 import 'package:orana/main/services/fixed_costs/update_constants_data.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 
 Future<void> showConstantsDialog(BuildContext parentContext, List<Constant> constants) async {
   for (var constant in constants) {

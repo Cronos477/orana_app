@@ -1,6 +1,6 @@
-import 'package:orana/main/classes/miscellaneous/currency_input_formatter.dart';
+import 'package:orana/utils/formatters/currency_input_formatter.dart';
 import 'package:orana/main/widgets/custom_text_field.dart';
-import 'package:orana/utils/app_colors.dart';
+import 'package:orana/utils/constants/app_colors.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
